@@ -7222,6 +7222,13 @@ SYSCALL_DEFINE0(sched_simple_rr_getquantum)
 	return simple_rr_time_slice;
 }
 
+//+ OS Proj2: simple_rr
+SYSCALL_DEFINE1(sched_simple_rr_setquantum, int, time_slice )
+{
+    simple_rr_time_slice = time_slice;
+	return 0;
+}
+
 static const char stat_nam[] = TASK_STATE_TO_CHAR_STR;
 
 void sched_show_task(struct task_struct *p)

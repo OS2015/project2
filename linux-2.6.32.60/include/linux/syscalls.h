@@ -889,4 +889,7 @@ asmlinkage long sys_mmap_pgoff(unsigned long addr, unsigned long len,
 //+ OS Proj2: simple_rr
 asmlinkage long sys_sched_simple_rr_getquantum(void);
 
+//+ OS Proj2: simple_rr
+asmlinkage long sys_sched_simple_rr_setquantum(void, int);
+
 #endif

@@ -344,11 +344,12 @@
 #define __NR_perf_event_open	336
 //+ OS Proj2: simple_rr
 #define __NR_sched_simple_rr_getquantum	337
+#define __NR_sched_simple_rr_setquantum	338
 
 #ifdef __KERNEL__
 
 //+ OS Proj2: simple_rr
-#define NR_syscalls 338
+#define NR_syscalls 339
 
 #define __ARCH_WANT_IPC_PARSE_VERSION
 #define __ARCH_WANT_OLD_READDIR
