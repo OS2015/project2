@@ -85,8 +85,14 @@ static struct task_struct *pick_next_task_simple_rr(struct rq *rq)
 {
 	//+ OS Proj 2: implement here
 	//...
-	
-	return NULL;
+	if( rq->simple_rr.nr_running == 0 ){
+		return NULL;
+	}
+
+	struct task_struct* task = list_first_entry( &(rq->simple_rr.queue), struct task_struct, simple_rr.queue );
+	task->se.exec_start = rq->clock;
+
+	return tast;
 }
 
 static void put_prev_task_simple_rr(struct rq *rq, struct task_struct *p)

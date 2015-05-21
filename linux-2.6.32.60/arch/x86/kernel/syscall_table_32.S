@@ -337,3 +337,4 @@ ENTRY(sys_call_table)
 	.long sys_rt_tgsigqueueinfo	/* 335 */
 	.long sys_perf_event_open
 	.long sys_sched_simple_rr_getquantum	/* OS Proj2: simple_rr */
+	.long sys_sched_simple_rr_setquantum	/* OS Proj2: simple_rr */
