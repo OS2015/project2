@@ -36,7 +36,7 @@ static void enqueue_task_simple_rr(struct rq *rq, struct task_struct *p, int wak
 	
 	//+ OS Proj 2: implement here
 	//...
-	list_add_tail(p->simple_rr_list_item, rq->simple_rr.queue);
+	list_add_tail(&(p->simple_rr_run_list), &(rq->simple_rr.queue));
 	rq->simple_rr.nr_running++;
 }
 
@@ -47,7 +47,7 @@ static void dequeue_task_simple_rr(struct rq *rq, struct task_struct *p, int sle
 
 	//+ OS Proj 2: implement here
 	//...
-	list_del(p->simple_rr_list_item);
+	list_del(&(p->simple_rr_run_list));
 	rq->simple_rr.nr_running--;
 }
 
@@ -67,7 +67,7 @@ static void yield_task_simple_rr(struct rq *rq)
 {
 	//+ OS Proj 2: implement here
 	//...
-	requeue_task_simple_rr(rq, rq->rt.curr);
+	requeue_task_simple_rr(rq, &(rq->curr));
 }
 
 /*
@@ -89,10 +89,10 @@ static struct task_struct *pick_next_task_simple_rr(struct rq *rq)
 		return NULL;
 	}
 
-	struct task_struct* task = list_first_entry( &(rq->simple_rr.queue), struct task_struct, simple_rr.queue );
+	struct task_struct* task = list_first_entry( &(rq->simple_rr.queue), struct task_struct, simple_rr_run_list );
 	task->se.exec_start = rq->clock;
 
-	return tast;
+	return task;
 }
 
 static void put_prev_task_simple_rr(struct rq *rq, struct task_struct *p)
@@ -189,8 +189,8 @@ static void task_tick_simple_rr(struct rq *rq, struct task_struct *p,int queued)
 	//...
 	p->task_time_slice--;
 	if (p->task_time_slice > 0) return;
-	if (p->simple_rr_run_list.next != p->simple_rr_run_list.prev)
-		p->task_time_slice = rq->simple_rr_time_slice;
+	if (p->simple_rr_run_list.next != p->simple_rr_run_list.prev) {
+		p->task_time_slice = simple_rr_time_slice;
 		yield_task_simple_rr(p);
 	}
 }
