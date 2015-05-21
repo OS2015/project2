@@ -36,6 +36,8 @@ static void enqueue_task_simple_rr(struct rq *rq, struct task_struct *p, int wak
 	
 	//+ OS Proj 2: implement here
 	//...
+	list_add_tail(p->simple_rr_list_item, rq->simple_rr.queue);
+	rq->simple_rr.nr_running++;
 }
 
 static void dequeue_task_simple_rr(struct rq *rq, struct task_struct *p, int sleep)
@@ -45,6 +47,8 @@ static void dequeue_task_simple_rr(struct rq *rq, struct task_struct *p, int sle
 
 	//+ OS Proj 2: implement here
 	//...
+	list_del(p->simple_rr_list_item);
+	rq->simple_rr.nr_running--;
 }
 
 /*
@@ -59,11 +63,11 @@ static void requeue_task_simple_rr(struct rq *rq, struct task_struct *p)
 /*
  * current process is relinquishing control of the CPU
  */
-static void
-yield_task_simple_rr(struct rq *rq)
+static void yield_task_simple_rr(struct rq *rq)
 {
 	//+ OS Proj 2: implement here
 	//...
+	requeue_task_simple_rr(rq, rq->rt.curr);
 }
 
 /*
@@ -177,6 +181,12 @@ static void task_tick_simple_rr(struct rq *rq, struct task_struct *p,int queued)
 
 	//+ OS Proj 2: implement here
 	//...
+	p->task_time_slice--;
+	if (p->task_time_slice > 0) return;
+	if (p->simple_rr_run_list.next != p->simple_rr_run_list.prev)
+		p->task_time_slice = rq->simple_rr_time_slice;
+		yield_task_simple_rr(p);
+	}
 }
 
 /*
