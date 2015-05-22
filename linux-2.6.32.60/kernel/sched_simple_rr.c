@@ -191,6 +191,7 @@ static void task_tick_simple_rr(struct rq *rq, struct task_struct *p,int queued)
 	if (p->task_time_slice > 0) return;
 	if (p->simple_rr_run_list.next != p->simple_rr_run_list.prev) {
 		p->task_time_slice = simple_rr_time_slice;
+		set_tsk_need_resched(p);
 		yield_task_simple_rr(p);
 	}
 }
