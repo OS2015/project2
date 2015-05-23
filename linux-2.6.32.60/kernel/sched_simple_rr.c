@@ -67,7 +67,7 @@ static void yield_task_simple_rr(struct rq *rq)
 {
 	//+ OS Proj 2: implement here
 	//...
-	requeue_task_simple_rr(rq, &(rq->curr));
+	requeue_task_simple_rr(rq, (rq->curr));
 }
 
 /*
@@ -85,11 +85,12 @@ static struct task_struct *pick_next_task_simple_rr(struct rq *rq)
 {
 	//+ OS Proj 2: implement here
 	//...
+	struct task_struct *task;
 	if( rq->simple_rr.nr_running == 0 ){
 		return NULL;
 	}
 
-	struct task_struct* task = list_first_entry( &(rq->simple_rr.queue), struct task_struct, simple_rr_run_list );
+	task = list_first_entry( &(rq->simple_rr.queue), struct task_struct, simple_rr_run_list );
 	task->se.exec_start = rq->clock;
 
 	return task;
@@ -192,7 +193,7 @@ static void task_tick_simple_rr(struct rq *rq, struct task_struct *p,int queued)
 	if (p->simple_rr_run_list.next != p->simple_rr_run_list.prev) {
 		p->task_time_slice = simple_rr_time_slice;
 		set_tsk_need_resched(p);
-		yield_task_simple_rr(p);
+		yield_task_simple_rr(rq);
 	}
 }
 
