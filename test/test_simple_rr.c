@@ -95,7 +95,10 @@ int main(int argc, char *argv[])
 		};
 
 		old_quantum = syscall (SYS_simple_rr_getquantum);
+		printf( "old quantum: %d\n", old_quantum );
 		syscall (SYS_simple_rr_setquantum, quantum);
+		int tmp = syscall (SYS_simple_rr_getquantum);
+		printf( "quantum: %d\n", quantum );
     }
 	
 	//+ create the buffer
